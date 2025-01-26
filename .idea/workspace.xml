@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4f06373-89b5-4e46-a3d4-29a6a4912782" name="Changes" comment="create maven project add dependencies and add first test case">
-      <change afterPath="$PROJECT_DIR$/src/main/java/pages/CareersPage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/tests/CareersPageTest.java" afterDir="false" />
+    <list default="true" id="e4f06373-89b5-4e46-a3d4-29a6a4912782" name="Changes" comment="add CareersPage locators and create CareersPage and CareersPageTest classes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pages/BasePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/BasePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/pages/CareersPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/CareersPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/pages/HomePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/HomePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/tests/CareersPageTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/tests/CareersPageTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +40,7 @@
     "Maven. [org.apache.maven.plugins:maven-archetype-plugin:RELEASE:generate].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "TestNG.CareersPageTest.executor": "Run",
+    "TestNG.CareersPageTest.testQAJobsFiltering.executor": "Run",
     "TestNG.CareersPageTests.executor": "Run",
     "TestNG.HomePageTest.executor": "Run",
     "kotlin-language-version-configured": "true"
@@ -56,6 +58,24 @@
       <option name="PACKAGE_NAME" value="tests" />
       <option name="MAIN_CLASS_NAME" value="tests.CareersPageTest" />
       <option name="TEST_OBJECT" value="CLASS" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CareersPageTest.testQAJobsFiltering" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="untitled" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tests" />
+      <option name="MAIN_CLASS_NAME" value="tests.CareersPageTest" />
+      <option name="METHOD_NAME" value="testQAJobsFiltering" />
+      <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
       <method v="2">
@@ -99,6 +119,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="TestNG.CareersPageTest" />
+        <item itemvalue="TestNG.CareersPageTest.testQAJobsFiltering" />
         <item itemvalue="TestNG.CareersPageTests" />
         <item itemvalue="TestNG.HomePageTest" />
       </list>
@@ -121,11 +142,20 @@
       <option name="project" value="LOCAL" />
       <updated>1737917041391</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="add CareersPage locators and create CareersPage and CareersPageTest classes">
+      <option name="closed" value="true" />
+      <created>1737919306736</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1737919306736</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create maven project add dependencies and add first test case" />
-    <option name="LAST_COMMIT_MESSAGE" value="create maven project add dependencies and add first test case" />
+    <MESSAGE value="add CareersPage locators and create CareersPage and CareersPageTest classes" />
+    <option name="LAST_COMMIT_MESSAGE" value="add CareersPage locators and create CareersPage and CareersPageTest classes" />
   </component>
 </project>

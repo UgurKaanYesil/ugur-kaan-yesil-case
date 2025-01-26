@@ -10,7 +10,6 @@ import java.util.List;
 public class HomePage extends BasePage {
 
     private final By insiderLogo = By.cssSelector("a[href='https://useinsider.com/']");
-    private final By acceptCookiesButton = By.cssSelector("#wt-cli-accept-all-btn");
     private final By platformMenu = By.cssSelector("#navbarDropdownMenuLink");
 
     //Careers Page locators
@@ -33,16 +32,6 @@ public class HomePage extends BasePage {
         return driver.getCurrentUrl();
     }
 
-    public void acceptCookies() {
-        try {
-            if (waitForElementVisible(acceptCookiesButton).isDisplayed()) {
-                click(acceptCookiesButton);
-            }
-        } catch (Exception e) {
-            // Cookie popup görünmeyebilir, bu durumu handle ediyoruz
-            System.out.println("Cookie popup not found or already accepted");
-        }
-    }
 
     public boolean isPlatformMenuDisplayed() {
         try {

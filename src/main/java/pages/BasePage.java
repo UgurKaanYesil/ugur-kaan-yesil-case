@@ -12,6 +12,8 @@ public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
+    private final By acceptCookiesButton = By.cssSelector("#wt-cli-accept-all-btn");
+
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -23,6 +25,17 @@ public class BasePage {
 
     protected WebElement waitForElementClickable(By locator) {
         return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
+
+    public void acceptCookies() {
+        try {
+            if (waitForElementVisible(acceptCookiesButton).isDisplayed()) {
+                click(acceptCookiesButton);
+            }
+        } catch (Exception e) {
+            // Cookie popup görünmeyebilir, bu durumu handle ediyoruz
+            System.out.println("Cookie popup not found or already accepted");
+        }
     }
 
     protected void click(By locator) {

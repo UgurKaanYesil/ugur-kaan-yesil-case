@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
+import java.util.Set;
 
 public class CareersPage extends BasePage {
     // Güncellenmiş locator'lar
@@ -23,6 +24,8 @@ public class CareersPage extends BasePage {
     private final By jobPositions = By.cssSelector(".position-title");
     private final By jobDepartments = By.cssSelector(".position-department");
     private final By jobLocations = By.cssSelector(".position-location");
+
+    private final By viewRoleButton = By.cssSelector(".position-list-item-wrapper .btn-navy");
 
     public CareersPage(WebDriver driver) {
         super(driver);
@@ -194,6 +197,57 @@ public class CareersPage extends BasePage {
         } catch (Exception e) {
             System.out.println("Error checking job listings: " + e.getMessage());
             e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String clickViewRoleButton() throws InterruptedException {
+        try {
+            waitForPageLoad();
+            Thread.sleep(2000);
+
+            // İlk View Role butonunu bul
+            WebElement viewRoleBtn = waitForElementVisible(viewRoleButton);
+
+            // Butona scroll yap
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+                    viewRoleBtn
+            );
+            Thread.sleep(1000);
+
+            // Butonun URL'sini al
+            String leverUrl = viewRoleBtn.getAttribute("href");
+
+            // Butona tıkla
+            viewRoleBtn.click();
+
+            // Yeni sekmenin açılmasını bekle
+            Set<String> windowHandles = driver.getWindowHandles();
+            String originalWindow = driver.getWindowHandle();
+
+            for (String handle : windowHandles) {
+                if (!handle.equals(originalWindow)) {
+                    driver.switchTo().window(handle);
+                    break;
+                }
+            }
+
+            return leverUrl;
+        } catch (Exception e) {
+            System.out.println("Error clicking View Role button: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public boolean isLeverApplicationFormDisplayed() {
+        try {
+            waitForPageLoad();
+            // Lever form sayfasının karakteristik elementlerini kontrol et
+            return driver.findElement(By.cssSelector(".posting-header")).isDisplayed() &&
+                    driver.getCurrentUrl().contains("jobs.lever.co");
+        } catch (Exception e) {
+            System.out.println("Error checking Lever application form: " + e.getMessage());
             return false;
         }
     }

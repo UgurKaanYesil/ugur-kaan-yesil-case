@@ -102,4 +102,41 @@ public class CareersPageTest extends BaseTest {
             fail("Test failed due to interruption: " + e.getMessage());
         }
     }
+
+    @Test
+    public void testViewRoleRedirection() {
+        try {
+            driver.get("https://useinsider.com/careers/quality-assurance/");
+            driver.manage().window().maximize();
+
+            CareersPage careersPage = new CareersPage(driver);
+
+            careersPage.acceptCookies();
+            Thread.sleep(3000);
+
+            // See All QA Jobs butonuna tıkla
+            careersPage.clickSeeAllQaJobs();
+            Thread.sleep(3000);
+
+            // Istanbul, Turkey lokasyonunu filtrele
+            careersPage.filterByLocation("Istanbul, Turkey");
+            Thread.sleep(2000);
+
+            // View Role butonuna tıkla ve Lever URL'sini al
+            String leverUrl = careersPage.clickViewRoleButton();
+            Thread.sleep(3000);
+
+            // Lever Application form sayfasının açıldığını kontrol et
+            assertTrue(careersPage.isLeverApplicationFormDisplayed(),
+                    "Lever Application form should be displayed");
+
+            // URL'in Lever domain'inde olduğunu kontrol et
+            assertTrue(driver.getCurrentUrl().startsWith(leverUrl),
+                    "URL should match the Lever application URL");
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            fail("Test failed due to interruption: " + e.getMessage());
+        }
+    }
 }

@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e4f06373-89b5-4e46-a3d4-29a6a4912782" name="Changes" comment="add CareersPageTest new test case">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="e4f06373-89b5-4e46-a3d4-29a6a4912782" name="Changes" comment="add Check that all jobs’ Position contains case">
       <change beforePath="$PROJECT_DIR$/src/main/java/pages/CareersPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/pages/CareersPage.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/tests/CareersPageTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/tests/CareersPageTest.java" afterDir="false" />
     </list>
@@ -40,13 +39,14 @@
     "TestNG.CareersPageTest.executor": "Run",
     "TestNG.CareersPageTest.testJobListingsContent.executor": "Run",
     "TestNG.CareersPageTest.testQAJobsFiltering.executor": "Run",
-    "TestNG.CareersPageTest.testQAJobsFilteringAndContent.executor": "Debug",
+    "TestNG.CareersPageTest.testQAJobsFilteringAndContent.executor": "Run",
+    "TestNG.CareersPageTest.testViewRoleRedirection.executor": "Run",
     "TestNG.CareersPageTests.executor": "Run",
     "TestNG.HomePageTest.executor": "Run",
     "kotlin-language-version-configured": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="TestNG.CareersPageTest.testQAJobsFilteringAndContent">
+  <component name="RunManager" selected="TestNG.CareersPageTest.testViewRoleRedirection">
     <configuration name="CareersPageTest" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="untitled" />
       <extension name="coverage">
@@ -118,7 +118,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CareersPageTests" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="CareersPageTest.testViewRoleRedirection" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="untitled" />
       <extension name="coverage">
         <pattern>
@@ -127,8 +127,9 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="tests" />
-      <option name="MAIN_CLASS_NAME" value="tests.CareersPageTests" />
-      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="MAIN_CLASS_NAME" value="tests.CareersPageTest" />
+      <option name="METHOD_NAME" value="testViewRoleRedirection" />
+      <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
       <method v="2">
@@ -137,11 +138,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="TestNG.CareersPageTest.testViewRoleRedirection" />
         <item itemvalue="TestNG.CareersPageTest.testQAJobsFilteringAndContent" />
         <item itemvalue="TestNG.CareersPageTest.testQAJobsFiltering" />
         <item itemvalue="TestNG.CareersPageTest.testJobListingsContent" />
         <item itemvalue="TestNG.CareersPageTest" />
-        <item itemvalue="TestNG.CareersPageTests" />
       </list>
     </recent_temporary>
   </component>
@@ -178,13 +179,22 @@
       <option name="project" value="LOCAL" />
       <updated>1737922500559</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="add Check that all jobs’ Position contains case">
+      <option name="closed" value="true" />
+      <created>1738004432192</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1738004432192</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="create maven project add dependencies and add first test case" />
     <MESSAGE value="add CareersPage locators and create CareersPage and CareersPageTest classes" />
     <MESSAGE value="add CareersPageTest new test case" />
-    <option name="LAST_COMMIT_MESSAGE" value="add CareersPageTest new test case" />
+    <MESSAGE value="add Check that all jobs’ Position contains case" />
+    <option name="LAST_COMMIT_MESSAGE" value="add Check that all jobs’ Position contains case" />
   </component>
 </project>

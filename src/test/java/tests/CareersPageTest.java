@@ -73,4 +73,33 @@ public class CareersPageTest extends BaseTest {
             fail("Test failed due to interruption: " + e.getMessage());
         }
     }
+
+    @Test
+    public void testQAJobsFilteringAndContent() {
+        try {
+            driver.get("https://useinsider.com/careers/quality-assurance/");
+            driver.manage().window().maximize();
+
+            CareersPage careersPage = new CareersPage(driver);
+
+            careersPage.acceptCookies();
+            Thread.sleep(3000);
+
+            // See All QA Jobs butonuna tıkla
+            careersPage.clickSeeAllQaJobs();
+            Thread.sleep(3000);
+
+            // Istanbul, Turkey lokasyonunu filtrele
+            careersPage.filterByLocation("Istanbul, Turkey");
+            Thread.sleep(2000);
+
+            // İş ilanlarının içeriğini kontrol et
+            assertTrue(careersPage.checkJobListings(),
+                    "All jobs should contain 'Quality Assurance' in position and department, and 'Istanbul, Turkey' in location");
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            fail("Test failed due to interruption: " + e.getMessage());
+        }
+    }
 }

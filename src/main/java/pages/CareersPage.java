@@ -18,6 +18,12 @@ public class CareersPage extends BasePage {
     private final By locationFilterDropdown = By.cssSelector("#select2-filter-by-location-container");
     private final By locationOptions = By.cssSelector("li.select2-results__option");
 
+    private final By jobListContainer = By.id("jobs-list");
+    private final By jobItems = By.cssSelector(".position-list-item-wrapper");
+    private final By jobPositions = By.cssSelector(".position-title");
+    private final By jobDepartments = By.cssSelector(".position-department");
+    private final By jobLocations = By.cssSelector(".position-location");
+
     public CareersPage(WebDriver driver) {
         super(driver);
     }
@@ -136,6 +142,59 @@ public class CareersPage extends BasePage {
             Thread.sleep(1000);
         } catch (Exception e) {
             System.out.println("Error scrolling to element: " + e.getMessage());
+        }
+    }
+
+    public boolean checkJobListings() {
+        try {
+            waitForPageLoad();
+            Thread.sleep(3000); // Sayfa yüklenmesi için ek bekleme
+
+            WebElement container = waitForElementVisible(jobListContainer);
+            List<WebElement> jobListItems = driver.findElements(jobItems);
+
+            if (jobListItems.isEmpty()) {
+                System.out.println("No job listings found");
+                return false;
+            }
+
+            System.out.println("Found " + jobListItems.size() + " job listings");
+
+            for (WebElement jobItem : jobListItems) {
+                WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+                WebElement positionElement = wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(jobItem, jobPositions));
+                WebElement departmentElement = wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(jobItem, jobDepartments));
+                WebElement locationElement = wait.until(ExpectedConditions.presenceOfNestedElementLocatedBy(jobItem, jobLocations));
+
+                String position = positionElement.getText().trim();
+                String department = departmentElement.getText().trim();
+                String location = locationElement.getText().trim();
+
+                System.out.println("\nChecking job listing:");
+                System.out.println("Position: " + position);
+                System.out.println("Department: " + department);
+                System.out.println("Location: " + location);
+
+                boolean positionCheck = position.toLowerCase().contains("qa") ||
+                        position.toLowerCase().contains("quality assurance");
+                boolean departmentCheck = department.equals("Quality Assurance");
+                boolean locationCheck = location.equals("Istanbul, Turkey");
+
+                if (!positionCheck || !departmentCheck || !locationCheck) {
+                    System.out.println("❌ Job listing content doesn't match criteria");
+                    if (!positionCheck) System.out.println("Position check failed");
+                    if (!departmentCheck) System.out.println("Department check failed");
+                    if (!locationCheck) System.out.println("Location check failed");
+                    return false;
+                }
+                System.out.println("✓ Job listing matches all criteria");
+            }
+            return true;
+        } catch (Exception e) {
+            System.out.println("Error checking job listings: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
     }
 }

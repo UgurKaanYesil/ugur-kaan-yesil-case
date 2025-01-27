@@ -1,6 +1,7 @@
 package pages;
 
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
@@ -8,17 +9,13 @@ import java.util.List;
 import java.util.Set;
 
 public class CareersPage extends BasePage {
-    // Güncellenmiş locator'lar
     private final By locationsBlock = By.cssSelector("#career-find-our-calling");
     private final By teamsBlock = By.cssSelector("#career-find-our-calling");
     private final By lifeAtInsiderBlock = By.cssSelector("body > div.elementor.elementor-22610 > section.elementor-section.elementor-top-section.elementor-element.elementor-element-a8e7b90.elementor-section-full_width.elementor-section-height-default.elementor-section-height-default > div > div > div");
-
-    // Yeni locator'lar
     private final By seeAllQaJobsButton = By.cssSelector("a[href='https://useinsider.com/careers/open-positions/?department=qualityassurance']");
     private final By jobsList = By.cssSelector(".position-list .position-list-item");
     private final By locationFilterDropdown = By.cssSelector("#select2-filter-by-location-container");
     private final By locationOptions = By.cssSelector("li.select2-results__option");
-
     private final By jobListContainer = By.id("jobs-list");
     private final By jobItems = By.cssSelector(".position-list-item-wrapper");
     private final By jobPositions = By.cssSelector(".position-title");
@@ -33,7 +30,7 @@ public class CareersPage extends BasePage {
 
     private void waitForPageLoad() {
         try {
-            Thread.sleep(5000); // Sayfa yüklenmesi için bekle
+            Thread.sleep(5000);
             new WebDriverWait(driver, Duration.ofSeconds(20))
                     .until(webDriver -> ((JavascriptExecutor) webDriver)
                             .executeScript("return document.readyState").equals("complete"));
@@ -99,17 +96,33 @@ public class CareersPage extends BasePage {
         try {
             waitForPageLoad();
 
-            // Dropdown'ı aç
-            WebElement dropdown = waitForElementClickable(locationFilterDropdown);
-            ((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
+            WebElement dropdown = new WebDriverWait(driver, Duration.ofSeconds(20))
+                    .until(ExpectedConditions.elementToBeClickable(locationFilterDropdown));
+
+            ((JavascriptExecutor) driver).executeScript(
+                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+                    dropdown
+            );
+            Thread.sleep(1000);
+
+            try {
+                dropdown.click();
+            } catch (ElementClickInterceptedException e) {
+                try {
+                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
+                } catch (Exception e2) {
+                    Actions actions = new Actions(driver);
+                    actions.moveToElement(dropdown).click().perform();
+                }
+            }
+
             Thread.sleep(2000);
 
-            // Select2 dropdown açıldıktan sonra seçenekleri bul
-            List<WebElement> options = driver.findElements(locationOptions);
+            List<WebElement> options = new WebDriverWait(driver, Duration.ofSeconds(10))
+                    .until(ExpectedConditions.presenceOfAllElementsLocatedBy(locationOptions));
 
-            // Seçenekler arasında Istanbul, Turkey'i bul ve tıkla
             for (WebElement option : options) {
-                if (option.getText().contains("Istanbul, Turkey")) {
+                if (option.getText().contains(location)) {
                     ((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
                     break;
                 }
@@ -206,23 +219,18 @@ public class CareersPage extends BasePage {
             waitForPageLoad();
             Thread.sleep(2000);
 
-            // İlk View Role butonunu bul
             WebElement viewRoleBtn = waitForElementVisible(viewRoleButton);
 
-            // Butona scroll yap
             ((JavascriptExecutor) driver).executeScript(
                     "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
                     viewRoleBtn
             );
             Thread.sleep(1000);
 
-            // Butonun URL'sini al
             String leverUrl = viewRoleBtn.getAttribute("href");
 
-            // Butona tıkla
             viewRoleBtn.click();
 
-            // Yeni sekmenin açılmasını bekle
             Set<String> windowHandles = driver.getWindowHandles();
             String originalWindow = driver.getWindowHandle();
 
@@ -243,7 +251,6 @@ public class CareersPage extends BasePage {
     public boolean isLeverApplicationFormDisplayed() {
         try {
             waitForPageLoad();
-            // Lever form sayfasının karakteristik elementlerini kontrol et
             return driver.findElement(By.cssSelector(".posting-header")).isDisplayed() &&
                     driver.getCurrentUrl().contains("jobs.lever.co");
         } catch (Exception e) {

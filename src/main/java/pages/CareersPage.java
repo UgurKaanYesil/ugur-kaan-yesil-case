@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 import java.util.List;
-import java.util.Set;
+
 
 public class CareersPage extends BasePage {
     private final By locationsBlock = By.cssSelector("#career-find-our-calling");
@@ -14,15 +14,12 @@ public class CareersPage extends BasePage {
     private final By lifeAtInsiderBlock = By.cssSelector("body > div.elementor.elementor-22610 > section.elementor-section.elementor-top-section.elementor-element.elementor-element-a8e7b90.elementor-section-full_width.elementor-section-height-default.elementor-section-height-default > div > div > div");
     private final By seeAllQaJobsButton = By.cssSelector("a[href='https://useinsider.com/careers/open-positions/?department=qualityassurance']");
     private final By jobsList = By.cssSelector(".position-list .position-list-item");
-    private final By locationFilterDropdown = By.cssSelector("#select2-filter-by-location-container");
-    private final By locationOptions = By.cssSelector("li.select2-results__option");
     private final By jobListContainer = By.id("jobs-list");
     private final By jobItems = By.cssSelector(".position-list-item-wrapper");
     private final By jobPositions = By.cssSelector(".position-title");
     private final By jobDepartments = By.cssSelector(".position-department");
     private final By jobLocations = By.cssSelector(".position-location");
 
-    private final By viewRoleButton = By.cssSelector(".position-list-item-wrapper .btn-navy");
 
     public CareersPage(WebDriver driver) {
         super(driver);
@@ -96,40 +93,15 @@ public class CareersPage extends BasePage {
         try {
             waitForPageLoad();
 
-            WebElement dropdown = new WebDriverWait(driver, Duration.ofSeconds(20))
-                    .until(ExpectedConditions.elementToBeClickable(locationFilterDropdown));
-
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
-                    dropdown
+            String script = String.format(
+                    "var select2 = $(\"select[data-select2-id='filter-by-location']\"); " +
+                            "select2.val('%s').trigger('change');",
+                    location
             );
-            Thread.sleep(1000);
-
-            try {
-                dropdown.click();
-            } catch (ElementClickInterceptedException e) {
-                try {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", dropdown);
-                } catch (Exception e2) {
-                    Actions actions = new Actions(driver);
-                    actions.moveToElement(dropdown).click().perform();
-                }
-            }
+            ((JavascriptExecutor) driver).executeScript(script);
 
             Thread.sleep(2000);
-
-            List<WebElement> options = new WebDriverWait(driver, Duration.ofSeconds(10))
-                    .until(ExpectedConditions.presenceOfAllElementsLocatedBy(locationOptions));
-
-            for (WebElement option : options) {
-                if (option.getText().contains(location)) {
-                    ((JavascriptExecutor) driver).executeScript("arguments[0].click();", option);
-                    break;
-                }
-            }
-
             waitForPageLoad();
-            Thread.sleep(2000);
 
         } catch (Exception e) {
             System.out.println("Error filtering by location: " + e.getMessage());
@@ -214,37 +186,42 @@ public class CareersPage extends BasePage {
         }
     }
 
-    public String clickViewRoleButton() throws InterruptedException {
+    public String clickViewRoleButton() {
         try {
             waitForPageLoad();
             Thread.sleep(2000);
 
-            WebElement viewRoleBtn = waitForElementVisible(viewRoleButton);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+            wait.until(ExpectedConditions.presenceOfElementLocated(jobListContainer));
 
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
-                    viewRoleBtn
-            );
+            List<WebElement> jobItems = driver.findElements(By.cssSelector(".position-list-item-wrapper"));
+            if (jobItems.isEmpty()) {
+                throw new NoSuchElementException("No job items found");
+            }
+
+            Actions actions = new Actions(driver);
+
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", jobItems.get(0));
+            Thread.sleep(2000);
+
+            actions.moveToElement(jobItems.get(0)).perform();
             Thread.sleep(1000);
+
+            WebElement viewRoleBtn = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.cssSelector(".position-list-item-wrapper:hover .btn-navy")));
 
             String leverUrl = viewRoleBtn.getAttribute("href");
 
-            viewRoleBtn.click();
+            js.executeScript("arguments[0].click();", viewRoleBtn);
 
-            Set<String> windowHandles = driver.getWindowHandles();
-            String originalWindow = driver.getWindowHandle();
-
-            for (String handle : windowHandles) {
-                if (!handle.equals(originalWindow)) {
-                    driver.switchTo().window(handle);
-                    break;
-                }
-            }
+            wait.until(driver -> driver.getWindowHandles().size() > 1);
 
             return leverUrl;
+
         } catch (Exception e) {
-            System.out.println("Error clicking View Role button: " + e.getMessage());
-            throw e;
+            System.out.println("Error in clickViewRoleButton: " + e.getMessage());
+            throw new RuntimeException("Failed to click View Role button", e);
         }
     }
 

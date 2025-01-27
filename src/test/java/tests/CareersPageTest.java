@@ -4,6 +4,8 @@ import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.CareersPage;
 import static org.testng.Assert.*;
+import org.openqa.selenium.JavascriptExecutor;
+import java.util.Set;
 
 public class CareersPageTest extends BaseTest {
 
@@ -106,13 +108,25 @@ public class CareersPageTest extends BaseTest {
             Thread.sleep(3000);
 
             careersPage.clickSeeAllQaJobs();
-            Thread.sleep(3000);
+            Thread.sleep(5000);
 
             careersPage.filterByLocation("Istanbul, Turkey");
+            Thread.sleep(3000);
+
+            // Sayfanın yüklenmesini bekle
+            assertTrue(careersPage.areJobsListDisplayed(),
+                    "Jobs list should be visible before clicking View Role button");
             Thread.sleep(2000);
 
             String leverUrl = careersPage.clickViewRoleButton();
-            Thread.sleep(3000);
+            Thread.sleep(5000);
+
+            // Yeni sekmeye geç
+            Set<String> windowHandles = driver.getWindowHandles();
+            driver.switchTo().window(windowHandles.stream()
+                    .filter(handle -> !handle.equals(driver.getWindowHandle()))
+                    .findFirst()
+                    .orElseThrow());
 
             assertTrue(careersPage.isLeverApplicationFormDisplayed(),
                     "Lever Application form should be displayed");
